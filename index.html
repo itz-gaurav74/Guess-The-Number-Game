@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Number Guess Game</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>Guess A Number Between 0 To 9</h2>
+      <input
+        type="number"
+        id="randomNumDisplay"
+        placeholder="Random Number..."
+        disabled
+      />
+      <input type="number" id="userInp" placeholder="Guess A Number ?" />
+      <div class="btn_container">
+        <button id="check_btn">
+          <span> Check </span>
+        </button>
+        <button id="newGame_btn">
+          <span> New Game</span>
+        </button>
+      </div>
+      <h3 id="alert"></h3>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        let userInpElement = document.querySelector("#userInp");
+        let randomDisplay = document.querySelector("#randomNumDisplay");
+        let checkBtn = document.querySelector("#check_btn");
+        let newGame = document.querySelector("#newGame_btn");
+        let cl = console.log.bind(console);
+        let alert = document.querySelector("#alert");
+        let randomNum = Math.floor(Math.random() * 10);
+
+        // check btn clicked...
+        checkBtn.addEventListener("click", () => {
+          cl(`Random Number : ${randomNum}`);
+          cl("Check Btn Clicked");
+          let userInp = userInpElement;
+
+          if (userInp.value === "") {
+            cl("Pls Enter A Number");
+            alert.innerText = "Pls Fill The User Input!";
+            userInpElement.setAttribute("class", "userErr");
+
+            // Removing Shake effect After 500 milliseconds
+            setTimeout(() => {
+              userInpElement.classList.remove("userErr");
+            }, 500);
+          } else if (randomNum == userInp.value) {
+            cl("Win");
+            randomDisplay.setAttribute(
+              "placeholder",
+              `Random Number ${randomNum}`
+            );
+            alert.innerText = "Yah! You Win";
+            userInp.disabled = true; // Disable Input
+          } else {
+            cl("Try Again");
+            alert.innerText = "Oppps! Guess Again";
+            userInpElement.value = "";
+            userInpElement.setAttribute("placeholder", `Guess Again`);
+            userInpElement.setAttribute("class", "userErr");
+
+            // Removing Shake effect After 500 milliseconds
+            setTimeout(() => {
+              userInpElement.classList.remove("userErr");
+            }, 500);
+          }
+        });
+
+        newGame.addEventListener("click", () => {
+          alert.innerText = "";
+          userInpElement.value = "";
+          randomNum = Math.floor(Math.random() * 10); // Updating existing randomNum
+          userInp.disabled = false;
+          randomDisplay.setAttribute("placeholder", "Random Number...");
+        });
+      });
+    </script>
+  </body>
+</html>
